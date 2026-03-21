@@ -1,0 +1,33 @@
+name: Deploy Application
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # Manual button
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Create .env file with enviroment variables
+        run: |
+          echo "VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}" >> .env
+          echo "VITE_SUPABASE_ANON_KEY=${{ secrets.VITE_SUPABASE_ANON_KEY }}" >> .env
+          echo "VITE_RECAPTCHA_SITE_KEY=${{ secrets.VITE_RECAPTCHA_SITE_KEY }}" >> .env
+
+      - name: Build React app
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: 92.113.28.69
+          username: u351649143.ioamigo.com
+          password: ${{ secrets.FTP_PASS }}
+          local-dir: dist/
+          dangerous-clean-slate: true

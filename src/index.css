@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 333 87% 36%; /* #A80D50 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 333 87% 96%; /* Lighter shade of primary */
+    --secondary-foreground: 333 87% 20%; /* Darker shade for text on secondary */
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 333 87% 90%; /* Accent shade of primary */
+    --accent-foreground: 333 87% 15%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 333 87% 36%; /* #A80D50 */
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-family: 'Inter', sans-serif;
+  }
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.5) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted-foreground) / 0.5);
+    border-radius: 10px;
+  }
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #a80d50 0%, #c7377a 100%);
+}
+
+.medical-gradient {
+  background: linear-gradient(135deg, #a80d50 0%, #8a0a42 100%);
+}
+
+.hero-gradient {
+  background: linear-gradient(
+    135deg,
+    rgba(168, 13, 80, 0.9) 0%,
+    rgba(199, 55, 122, 0.9) 100%
+  );
+}
+
+.glass-effect {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.floating-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+  from {
+    box-shadow: 0 0 20px rgba(168, 13, 80, 0.3);
+  }
+  to {
+    box-shadow: 0 0 30px rgba(168, 13, 80, 0.6);
+  }
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #a80d50 0%, #8a0a42 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.section-padding {
+  @apply py-16 sm:py-20;
+}
+
+.container-custom {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Ensure App takes full height if Hero is the only content */
+.flex-grow {
+  flex-grow: 1;
+}
+main.flex-grow {
+  display: flex;
+  flex-direction: column;
+}
+main.flex-grow > div {
+  /* This targets the PageWrapper */
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+main.flex-grow > div > section#inicio {
+  /* This targets the Hero section if it's a direct child */
+  flex-grow: 1;
+}
+/* If HomePage component wraps Hero, then: */
+main.flex-grow > div > div:first-child > section#inicio {
+  /* Targets Hero inside HomePage assuming HomePage is a simple wrapper */
+  flex-grow: 1;
+}

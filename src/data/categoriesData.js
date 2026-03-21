@@ -1,0 +1,18 @@
+export const categories = [
+  'Glaucoma',
+  'Retina',
+  'Cirugía Refractiva',
+  'Salud Visual',
+  'Superficie Ocular',
+  'Presbicia',
+  'Lentes de Contacto',
+  'Salud Ocular',
+  'Miopía, Hipermetropía',
+  'Investigación',
+  'Estrabismo y Ortóptica',
+  'Noticas',
+  'Oculoplastia',
+  'Cataratas',
+  'Córnea',
+  'Curiosidades',
+];
