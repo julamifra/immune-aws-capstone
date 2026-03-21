@@ -1,0 +1,14 @@
+aws_region           = "eu-west-1"
+project_name         = "ioamigo-website"
+environment          = "demo"
+frontend_bucket_name = "ioamigo-demo-frontend-CHANGE-ME-123456"
+
+# Set to true only for short-lived demo environments.
+force_destroy     = false
+enable_versioning = true
+
+tags = {
+  Owner       = "julam"
+  CostCenter  = "master"
+  Repository  = "immune-aws-ioamigo-website"
+}
