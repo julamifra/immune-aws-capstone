@@ -14,3 +14,20 @@ dist/
 .idea/
 *.sublime-project
 *.sublime-workspace
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+*.tfvars
+*.tfvars.json
+*.auto.tfvars
+*.auto.tfvars.json
+!.terraform.lock.hcl
+!*.tfvars.example
