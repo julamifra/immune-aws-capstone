@@ -1,17 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import PreferredDatePicker from './PreferredDatePicker';
-import { useToast } from '@/components/ui/use-toast';
 
 const Step3Form = ({ initialData, onSubmit, onBack, isSubmitting }) => {
   const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState({});
-  const recaptchaRef = useRef(null);
-  const { toast } = useToast();
 
   const MONDAY_WEDNESDAY_THURSDAY_RANGES = ['14:30 - 16:30', '16:30 - 18:30'];
   const FRIDAY_RANGES = ['09:00 - 11:00', '11:00 - 13:00'];
@@ -67,24 +63,13 @@ const Step3Form = ({ initialData, onSubmit, onBack, isSubmitting }) => {
     if (!formData.preferredTime)
       validationErrors.preferredTime = 'La hora es obligatoria.';
 
-    const token = recaptchaRef.current.getValue();
-    if (!token) {
-      toast({
-        title: 'Verificación Requerida',
-        description: 'Por favor, completa el reCAPTCHA para continuar.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
     setErrors({});
-    onSubmit({ ...formData, recaptchaToken: token });
-    recaptchaRef.current.reset();
+    onSubmit(formData);
   };
 
   return (
@@ -230,13 +215,6 @@ const Step3Form = ({ initialData, onSubmit, onBack, isSubmitting }) => {
           className="h-4 w-4"
         />
         <Label htmlFor="whatsapp">Prefiero que me contacten por WhatsApp</Label>
-      </div>
-
-      <div className="flex justify-center py-4">
-        <ReCAPTCHA
-          ref={recaptchaRef}
-          sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-        />
       </div>
 
       <div className="pt-4">

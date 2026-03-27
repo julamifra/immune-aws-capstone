@@ -1,7 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, Loader2 } from 'lucide-react';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -34,7 +33,6 @@ const ContactPage = () => {
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const recaptchaRef = useRef(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -47,23 +45,10 @@ const ContactPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const token = recaptchaRef.current.getValue();
-    if (!token) {
-      toast({
-        title: 'Verificación Requerida',
-        description: 'Por favor, completa el reCAPTCHA para continuar.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
-      await sendEmailService(
-        { ...formData, recaptchaToken: token },
-        'contactForm'
-      );
+      await sendEmailService(formData, 'contactForm');
 
       toast({
         title: '¡Mensaje Enviado!',
@@ -79,7 +64,6 @@ const ContactPage = () => {
         subject: '',
         message: '',
       });
-      recaptchaRef.current.reset();
     } catch (error) {
       console.error('Error submitting form:', error);
       toast({
@@ -210,13 +194,6 @@ const ContactPage = () => {
                         rows={5}
                         className="border-gray-300 focus:border-brand-DEFAULT focus:ring-brand-DEFAULT"
                         disabled={isSubmitting}
-                      />
-                    </div>
-
-                    <div className="flex justify-center py-4">
-                      <ReCAPTCHA
-                        ref={recaptchaRef}
-                        sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
                       />
                     </div>
 
