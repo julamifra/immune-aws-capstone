@@ -130,9 +130,9 @@ const PrivacyPolicyPage = () => {
               </li>
               <li>
                 Almacenar y procesar los mensajes que nos envías a través de
-                nuestros canales de comunicación (ej. chatbot, formularios de
-                contacto) con el fin de responder a tus consultas, mejorar la
-                calidad de nuestros servicios y para análisis internos.
+                nuestros canales de comunicación, como formularios de contacto,
+                con el fin de responder a tus consultas, mejorar la calidad de
+                nuestros servicios y para análisis internos.
               </li>
             </ul>
             <p>

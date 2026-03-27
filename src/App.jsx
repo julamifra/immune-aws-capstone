@@ -11,7 +11,6 @@ import ScrollToTop from '@/components/ScrollToTop';
 import Loader from '@/components/Loader';
 import { routePaths } from '@/config/routes';
 import { HelmetProvider } from 'react-helmet-async';
-import CustomChatBot from '@/components/Chatbot/CustomChatbot';
 import { logPageView } from '@/services/logService';
 import PideCitaDrawer from '@/components/PideCita/PideCitaDrawer';
 import MobileBottomBar from '@/components/MobileBottomBar';
@@ -239,7 +238,6 @@ function App() {
         <Footer />
         <Toaster />
         <CookieConsentBanner />
-        <CustomChatBot />
         <MobileBottomBar onPideCitaClick={handlePideCitaClick} />
         <PideCitaDrawer isOpen={isPideCitaOpen} onClose={handlePideCitaClose} />
       </div>

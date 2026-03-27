@@ -15,12 +15,6 @@ export const imageUrls = {
   ],
   homePageVideo: `${SUPABASE_IMAGE_BASE_URL}/video_presentacion_ioamigo.mp4`,
   // ioaLogo: '/logo.jpg',
-  // chatbot: `${SUPABASE_IMAGE_BASE_URL}/robot2.png`,
-  chatbot_versions: [
-    `${SUPABASE_IMAGE_BASE_URL}/robot2-40x40.webp`,
-    `${SUPABASE_IMAGE_BASE_URL}/robot2-80x80.webp`,
-    `${SUPABASE_IMAGE_BASE_URL}/robot2-120x120.webp`,
-  ],
   ioaLogo_original: `${SUPABASE_IMAGE_BASE_URL}/logo1.jpg`,
   ioaLogo_versions: [
     `${SUPABASE_IMAGE_BASE_URL}/logo1-100W.webp`,

@@ -10,7 +10,7 @@
   - [Prerrequisitos](#prerrequisitos)
   - [Instalación](#instalación)
 - [Scripts Disponibles](#scripts-disponibles)
-- [Scripts para el Chatbot y Sitemap](#scripts-para-el-chatbot-y-sitemap)
+- [Scripts para Sitemap](#scripts-para-sitemap)
 - [Despliegue](#despliegue)
 - [Cómo Contribuir](#cómo-contribuir)
 - [Licencia](#licencia)
@@ -24,10 +24,9 @@ Este repositorio contiene el código fuente del frontend para el sitio web de IO
 - **Framework Principal**: [React](https://reactjs.org/) con [Vite](https://vitejs.dev/) para un desarrollo y compilación rápidos.
 - **Estilos**: [Tailwind CSS](https://tailwindcss.com/) para un diseño de utilidades y componentes reutilizables.
 - **Componentes UI**: [Shadcn UI](https://ui.shadcn.com/) (implementado a través de Radix UI y `tailwind-merge`) para componentes de alta calidad y accesibles.
-- **Backend y Base de Datos**: [Supabase](https://supabase.io/) para la gestión de noticias y el almacenamiento de embeddings del chatbot.
+- **Backend y Base de Datos**: integración en transición desde Supabase hacia una arquitectura basada en AWS.
 - **Enrutamiento**: [React Router](https://reactrouter.com/) para la navegación en la aplicación.
 - **Animaciones**: [Framer Motion](https://www.framer.com/motion/) para animaciones fluidas y declarativas.
-- **Inteligencia Artificial**: [Google Generative AI](https://ai.google.dev/) para la generación de embeddings del chatbot.
 - **Iconos**: [Lucide React](https://lucide.dev/guide/packages/lucide-react) para un conjunto de iconos limpio y consistente.
 
 ## Cómo Empezar
@@ -69,46 +68,19 @@ En el directorio del proyecto, puedes ejecutar:
 - `npm run preview`: Sirve la compilación de producción localmente para previsualización.
 - `npm run lint`: Ejecuta ESLint para revisar el código en busca de errores y problemas de estilo.
 - `npm run format`: Formatea todo el código con Prettier.
-- `npm run crawl`: Ejecuta el script de crawling para extraer datos del sitio web.
-- `npm run generate-embeddings`: Ejecuta el script que genera y guarda los embeddings para el chatbot.
 - `npm run update-urls`: Actualiza la lista de URLs del sitio y el sitemap.
 
-## Scripts para el Chatbot y Sitemap
+## Scripts para Sitemap
 
-Estos scripts, ubicados en la carpeta `scripts/`, son cruciales para recopilar y procesar la información que alimenta tanto al chatbot del sitio web como al `sitemap.xml`.
+Este script, ubicado en la carpeta `scripts/`, se utiliza para mantener actualizada la lista de URLs del sitio y el `sitemap.xml`.
 
-### Ficheros Clave
+### Fichero clave
 
-- **`crawler_v2.js`**: Rastrea el sitio web para extraer contenido textual. Guarda el resultado en `crawledData.js`.
-- **`extraData.js`**: Contiene información añadida manualmente para enriquecer la base de conocimiento del chatbot (ej. preguntas frecuentes, detalles específicos).
-- **`crawledData.js`**: (Generado automáticamente) Contiene los datos extraídos por el crawler. **No debe ser modificado manualmente**.
-- **`generateEmbeddings.js`**: Orquesta el proceso de embedding. Lee los datos de `crawledData.js` y `extraData.js`, los procesa, genera los vectores de embedding a través de la API de Google y los almacena en Supabase.
 - **`updateUrlsAndSitemap.js`**: Script que genera dos ficheros clave: `scripts/data/all_urls.js` (un listado de todas las URLs del sitio) y `public/sitemap.xml`. Actualiza el sitemap de forma inteligente, añadiendo solo las URLs nuevas.
-- **`utils.js`**: Proporciona funciones auxiliares para normalizar y dividir texto.
 
-### Flujos de Trabajo
+### Flujo de trabajo
 
-#### Actualizar la Base de Conocimiento del Chatbot
-
-Para actualizar la información del chatbot, sigue estos pasos en orden:
-
-1.  **Actualizar contenido del sitio web (Crawling):**
-    Ejecuta este comando para rastrear el sitio web y actualizar `crawledData.js`.
-
-    ```sh
-    npm run crawl
-    ```
-
-2.  **(Opcional) Añadir conocimiento manual:**
-    Si es necesario, edita directamente el fichero `scripts/extraData.js` para añadir o modificar información.
-
-3.  **Generar y almacenar los nuevos embeddings:**
-    Este es el paso final. El script borrará los datos antiguos y generará los nuevos embeddings a partir de la información actualizada.
-    ```sh
-    npm run generate-embeddings
-    ```
-
-#### Actualizar Sitemap y listado de URLs
+#### Actualizar sitemap y listado de URLs
 
 Este comando actualiza tanto el `sitemap.xml` como el fichero `all_urls.js`.
 

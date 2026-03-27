@@ -9,12 +9,9 @@
     "preview": "vite preview",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write .",
-    "crawl": "node scripts/crawler_v2.js",
-    "generate-embeddings": "node scripts/generateEmbeddings.js",
     "update-urls": "node scripts/updateUrlsAndSitemap.js"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.24.1",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.5",
     "@radix-ui/react-label": "^2.0.2",
