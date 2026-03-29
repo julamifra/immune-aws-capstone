@@ -158,6 +158,7 @@ Ejemplo temporal:
 ```text
 VITE_SUPABASE_URL=https://example.invalid
 VITE_SUPABASE_ANON_KEY=fake-anon-key-demo
+VITE_BLOG_API_URL=https://tu-api.execute-api.tu-region.amazonaws.com/blog
 ```
 
 Eso permite compilar el frontend mientras el backend real sigue en transicion. Si el frontend intenta usar Supabase de verdad, la llamada fallara en runtime.

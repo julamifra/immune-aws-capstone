@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+import { fetchNewsArticleBySlug } from '@/services/newsService';
 
 const useNewsArticle = (slug) => {
   const [article, setArticle] = useState(null);
@@ -17,26 +17,10 @@ const useNewsArticle = (slug) => {
       setLoading(true);
       setError(null);
       try {
-        const { data, error: dbError } = await supabase
-          .from('news_articles')
-          .select('*')
-          .eq('slug', slug)
-          .single();
-
-        if (dbError) {
-          if (dbError.code === 'PGRST116') {
-            // No rows found
-            setArticle(null);
-          } else {
-            throw dbError;
-          }
-        }
+        const data = await fetchNewsArticleBySlug(slug);
         setArticle(data);
       } catch (err) {
-        console.error(
-          'Error fetching news article by slug from Supabase:',
-          err
-        );
+        console.error('Error fetching news article from Blog API:', err);
         setError(err.message || 'Failed to fetch news article');
         setArticle(null);
       } finally {

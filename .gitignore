@@ -21,6 +21,8 @@ dist/
 *.tfstate.*
 *.tfplan
 *.plan
+tfplan
+infra/terraform/environments/demo/*.zip
 crash.log
 crash.*.log
 override.tf

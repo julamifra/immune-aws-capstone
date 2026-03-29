@@ -5,13 +5,13 @@ on:
     branches:
       - main
     paths:
-      - "src/**"
-      - "public/**"
-      - "package.json"
-      - "package-lock.json"
-      - "vite.config.js"
-      - "index.html"
-      - ".github/workflows/deploy-frontend-demo.yml"
+      - 'src/**'
+      - 'public/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vite.config.js'
+      - 'index.html'
+      - '.github/workflows/deploy-frontend-demo.yml'
   workflow_dispatch:
 
 permissions:

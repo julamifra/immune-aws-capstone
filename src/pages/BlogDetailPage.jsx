@@ -20,6 +20,10 @@ const NewsDetailPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { article, loading, error } = useNewsArticle(slug);
+  const articleCategories =
+    typeof article?.category === 'string' && article.category.trim()
+      ? article.category.split(',').map((cat) => cat.trim())
+      : [];
 
   if (loading) {
     return (
@@ -121,16 +125,18 @@ const NewsDetailPage = () => {
             </Button>
             <div className="bg-white rounded-2xl shadow-2xl p-6 md:p-10">
               <div className="mb-6">
-                <div className="flex flex-wrap gap-x-1 mb-4">
-                  {article.category.split(',').map((cat, catIndex) => (
-                    <span
-                      key={catIndex}
-                      className="inline-block bg-brand-extralight text-brand-DEFAULT text-sm font-semibold px-3 py-1 rounded-full"
-                    >
-                      {cat.trim()}
-                    </span>
-                  ))}
-                </div>
+                {articleCategories.length > 0 && (
+                  <div className="flex flex-wrap gap-x-1 mb-4">
+                    {articleCategories.map((cat, catIndex) => (
+                      <span
+                        key={catIndex}
+                        className="inline-block bg-brand-extralight text-brand-DEFAULT text-sm font-semibold px-3 py-1 rounded-full"
+                      >
+                        {cat}
+                      </span>
+                    ))}
+                  </div>
+                )}
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
                   {article.title}
                 </h1>

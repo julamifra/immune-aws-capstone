@@ -5,18 +5,18 @@ on:
     branches:
       - main
     paths:
-      - "infra/terraform/**"
-      - ".github/workflows/terraform-demo.yml"
+      - 'infra/terraform/**'
+      - '.github/workflows/terraform-demo.yml'
   workflow_dispatch:
     inputs:
       apply:
-        description: "Run terraform apply"
+        description: 'Run terraform apply'
         required: true
-        default: "false"
+        default: 'false'
         type: choice
         options:
-          - "false"
-          - "true"
+          - 'false'
+          - 'true'
 
 permissions:
   contents: read
@@ -34,8 +34,8 @@ jobs:
       TF_VAR_project_name: ${{ vars.TF_PROJECT_NAME }}
       TF_VAR_environment: demo
       TF_VAR_frontend_bucket_name: ${{ vars.FRONTEND_BUCKET_NAME }}
-      TF_VAR_force_destroy: "false"
-      TF_VAR_enable_versioning: "true"
+      TF_VAR_force_destroy: 'false'
+      TF_VAR_enable_versioning: 'true'
 
     steps:
       - name: Checkout repository
