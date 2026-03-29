@@ -1,5 +1,8 @@
 const BLOG_API_URL = import.meta.env.VITE_BLOG_API_URL?.replace(/\/$/, '');
 const API_PAGE_LIMIT = 50;
+const EVENTS_API_URL =
+  import.meta.env.VITE_EVENTS_API_URL?.replace(/\/$/, '') ??
+  BLOG_API_URL?.replace(/\/blog$/, '/events');
 
 const ensureBlogApiUrl = () => {
   if (!BLOG_API_URL) {
@@ -35,4 +38,17 @@ const fetchBlogPostsPage = async (nextToken) => {
 
 export const awsClient = {
   fetchBlogPostsPage,
+  async postUserEvent(payload) {
+    if (!EVENTS_API_URL) {
+      return;
+    }
+
+    await fetch(EVENTS_API_URL, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+  },
 };
