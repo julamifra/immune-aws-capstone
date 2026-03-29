@@ -13,6 +13,7 @@
     "tf:demo:plan": "powershell -ExecutionPolicy Bypass -File ./scripts/terraform-demo.ps1 -Action plan",
     "tf:demo:apply": "powershell -ExecutionPolicy Bypass -File ./scripts/terraform-demo.ps1 -Action apply",
     "tf:demo:output": "powershell -ExecutionPolicy Bypass -File ./scripts/terraform-demo.ps1 -Action output",
+    "seed:blog:demo": "powershell -ExecutionPolicy Bypass -File ./scripts/seed-blog-posts-demo.ps1",
     "deploy:frontend:demo": "powershell -ExecutionPolicy Bypass -File ./scripts/deploy-frontend-demo.ps1",
     "deploy:demo": "powershell -ExecutionPolicy Bypass -File ./scripts/deploy-demo-all.ps1"
   },

@@ -184,6 +184,7 @@ Cuando generes documentación:
 - Explica por qué se usa Terraform aquí aunque los apuntes mencionen CDK.
 - Usa lenguaje claro, técnico, pero natural.
 - Prioriza texto que pueda reutilizarse en memoria, defensa o anexos.
+- Actualiza `docs/migracion.md` en paralelo cada vez que se avance en la migración con cambios relevantes de infraestructura, despliegue, backend, frontend adaptado a AWS o decisiones de arquitectura.
 
 ## Qué hacer si hay conflicto entre instrucciones
 La prioridad es:
