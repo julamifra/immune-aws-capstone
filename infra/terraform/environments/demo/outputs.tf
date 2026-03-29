@@ -37,3 +37,23 @@ output "blog_posts_status_published_at_index_name" {
   description = "Name of the GSI used to query published blog posts by date."
   value       = module.blog_posts.status_published_at_index_name
 }
+
+output "blog_posts_reader_role_name" {
+  description = "IAM role name used by the blog list Lambda."
+  value       = module.blog_posts_reader_role.role_name
+}
+
+output "blog_list_posts_lambda_name" {
+  description = "Lambda function name that lists published blog posts."
+  value       = module.blog_list_posts_lambda.function_name
+}
+
+output "blog_api_endpoint" {
+  description = "Base endpoint for the demo blog HTTP API."
+  value       = module.blog_http_api.api_endpoint
+}
+
+output "blog_posts_route_url" {
+  description = "Public URL for the GET /blog route."
+  value       = module.blog_http_api.posts_route_url
+}

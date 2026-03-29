@@ -47,6 +47,12 @@ variable "enable_dynamodb_point_in_time_recovery" {
   default     = false
 }
 
+variable "api_cors_allow_origins" {
+  description = "Allowed origins for the demo HTTP API CORS configuration."
+  type        = list(string)
+  default     = ["*"]
+}
+
 variable "tags" {
   description = "Extra tags to attach to resources."
   type        = map(string)

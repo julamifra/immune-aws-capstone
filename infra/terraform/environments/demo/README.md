@@ -7,6 +7,9 @@ This environment creates the minimum AWS infrastructure needed for the demo depl
 - 1 S3 bucket for frontend static files
 - 1 S3 bucket for blog assets
 - 1 DynamoDB table for blog posts
+- 1 IAM role for the blog listing Lambda
+- 1 Lambda function to list published blog posts
+- 1 API Gateway HTTP API route (`GET /blog`)
 - S3 website configuration for the frontend (`index.html` fallback for SPA routes)
 - Public-read access for demo frontend files and demo blog assets
 - Server-side encryption (AES256)
@@ -39,6 +42,9 @@ After apply, Terraform prints values such as:
 - `blog_posts_table_name`
 - `blog_posts_slug_index_name`
 - `blog_posts_status_published_at_index_name`
+- `blog_list_posts_lambda_name`
+- `blog_api_endpoint`
+- `blog_posts_route_url`
 
 ## Demo blog seed
 
@@ -47,3 +53,11 @@ From the project root, you can insert a small set of demo blog posts with:
 ```bash
 npm run seed:blog:demo
 ```
+
+Then run:
+
+```bash
+npm run tf:demo:output
+```
+
+Use `blog_posts_route_url` to test the first blog endpoint.
