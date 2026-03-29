@@ -37,7 +37,9 @@ La base Terraform ya creada en el repositorio despliega, por ahora, el minimo ne
 - bucket S3 adicional para assets del blog
 - tabla DynamoDB `BlogPosts`
 - Lambda `GET /blog` para listar posts publicados
+- Lambda `POST /events` para registrar eventos del frontend en CloudWatch
 - API Gateway HTTP API con la ruta `GET /blog`
+- API Gateway HTTP API con la ruta `POST /events`
 - configuracion de static website hosting
 - fallback SPA con `index.html`
 - cifrado del bucket
@@ -159,6 +161,7 @@ Ejemplo temporal:
 VITE_SUPABASE_URL=https://example.invalid
 VITE_SUPABASE_ANON_KEY=fake-anon-key-demo
 VITE_BLOG_API_URL=https://tu-api.execute-api.tu-region.amazonaws.com/blog
+VITE_EVENTS_API_URL=https://tu-api.execute-api.tu-region.amazonaws.com/events
 ```
 
 Eso permite compilar el frontend mientras el backend real sigue en transicion. Si el frontend intenta usar Supabase de verdad, la llamada fallara en runtime.
@@ -237,8 +240,10 @@ Terraform devolvera valores como:
 - `blog_lambda_execution_role_name`
 - `blog_lambda_execution_role_arn`
 - `blog_list_posts_lambda_name`
+- `frontend_event_logger_lambda_name`
 - `blog_api_endpoint`
 - `blog_posts_route_url`
+- `frontend_events_route_url`
 
 La URL del website endpoint de S3 para la demo debe abrirse con `http`, no con `https`.
 

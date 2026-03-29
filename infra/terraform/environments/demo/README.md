@@ -8,7 +8,9 @@ This environment creates the AWS infrastructure currently deployed for the demo 
 - 1 S3 bucket for blog assets
 - 1 DynamoDB table for blog posts
 - 1 Lambda function to list published blog posts
+- 1 Lambda function to log frontend events to CloudWatch
 - 1 API Gateway HTTP API with route `GET /blog`
+- 1 API Gateway HTTP API with route `POST /events`
 - S3 website configuration for the frontend (`index.html` fallback for SPA routes)
 - Public-read access for demo frontend files and demo blog assets
 - Server-side encryption (AES256)
@@ -55,8 +57,10 @@ After apply, Terraform prints values such as:
 - `blog_lambda_execution_role_name`
 - `blog_lambda_execution_role_arn`
 - `blog_list_posts_lambda_name`
+- `frontend_event_logger_lambda_name`
 - `blog_api_endpoint`
 - `blog_posts_route_url`
+- `frontend_events_route_url`
 
 ## Demo blog seed
 
