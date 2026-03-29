@@ -12,3 +12,8 @@ output "posts_route_url" {
   description = "Public URL for the GET /blog route."
   value       = "${aws_apigatewayv2_api.this.api_endpoint}/blog"
 }
+
+output "events_route_url" {
+  description = "Public URL for the POST /events route."
+  value       = var.events_lambda_invoke_arn != null ? "${aws_apigatewayv2_api.this.api_endpoint}/events" : null
+}

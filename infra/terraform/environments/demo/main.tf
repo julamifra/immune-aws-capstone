@@ -58,12 +58,24 @@ module "blog_list_posts_lambda" {
   tags                           = local.common_tags
 }
 
+module "frontend_event_logger_lambda" {
+  source = "../../modules/lambda_log_event"
+
+  function_name = "${var.project_name}-${var.environment}-frontend-log-event"
+  role_arn      = local.lambda_execution_role_arn
+  source_dir    = "${path.root}/../../../../backend/lambdas/events/log-event"
+  output_path   = "${path.root}/${var.project_name}-${var.environment}-frontend-log-event.zip"
+  tags          = local.common_tags
+}
+
 module "blog_http_api" {
   source = "../../modules/apigatewayv2_http_api_blog_posts"
 
-  api_name             = "${var.project_name}-${var.environment}-blog-api"
-  lambda_function_name = module.blog_list_posts_lambda.function_name
-  lambda_invoke_arn    = module.blog_list_posts_lambda.invoke_arn
-  cors_allow_origins   = var.api_cors_allow_origins
-  tags                 = local.common_tags
+  api_name                    = "${var.project_name}-${var.environment}-blog-api"
+  lambda_function_name        = module.blog_list_posts_lambda.function_name
+  lambda_invoke_arn           = module.blog_list_posts_lambda.invoke_arn
+  events_lambda_function_name = module.frontend_event_logger_lambda.function_name
+  events_lambda_invoke_arn    = module.frontend_event_logger_lambda.invoke_arn
+  cors_allow_origins          = var.api_cors_allow_origins
+  tags                        = local.common_tags
 }

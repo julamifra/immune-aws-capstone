@@ -53,6 +53,11 @@ output "blog_list_posts_lambda_name" {
   value       = module.blog_list_posts_lambda.function_name
 }
 
+output "frontend_event_logger_lambda_name" {
+  description = "Lambda function name that logs frontend events to CloudWatch."
+  value       = module.frontend_event_logger_lambda.function_name
+}
+
 output "blog_api_endpoint" {
   description = "Base endpoint for the demo blog HTTP API."
   value       = module.blog_http_api.api_endpoint
@@ -61,4 +66,9 @@ output "blog_api_endpoint" {
 output "blog_posts_route_url" {
   description = "Public URL for the GET /blog route."
   value       = module.blog_http_api.posts_route_url
+}
+
+output "frontend_events_route_url" {
+  description = "Public URL for the POST /events route."
+  value       = module.blog_http_api.events_route_url
 }
