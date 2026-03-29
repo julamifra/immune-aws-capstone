@@ -4,7 +4,7 @@ resource "aws_apigatewayv2_api" "this" {
 
   cors_configuration {
     allow_headers = ["content-type"]
-    allow_methods = var.events_lambda_invoke_arn != null ? ["GET", "OPTIONS", "POST"] : ["GET", "OPTIONS"]
+    allow_methods = ["GET", "OPTIONS", "POST"]
     allow_origins = var.cors_allow_origins
     max_age       = 300
   }
@@ -27,8 +27,6 @@ resource "aws_apigatewayv2_route" "list_posts" {
 }
 
 resource "aws_apigatewayv2_integration" "log_event" {
-  count = var.events_lambda_invoke_arn != null ? 1 : 0
-
   api_id                 = aws_apigatewayv2_api.this.id
   integration_type       = "AWS_PROXY"
   integration_uri        = var.events_lambda_invoke_arn
@@ -37,11 +35,9 @@ resource "aws_apigatewayv2_integration" "log_event" {
 }
 
 resource "aws_apigatewayv2_route" "log_event" {
-  count = var.events_lambda_invoke_arn != null ? 1 : 0
-
   api_id    = aws_apigatewayv2_api.this.id
   route_key = "POST /events"
-  target    = "integrations/${aws_apigatewayv2_integration.log_event[0].id}"
+  target    = "integrations/${aws_apigatewayv2_integration.log_event.id}"
 }
 
 resource "aws_apigatewayv2_stage" "default" {
@@ -61,8 +57,6 @@ resource "aws_lambda_permission" "allow_api_gateway" {
 }
 
 resource "aws_lambda_permission" "allow_api_gateway_events" {
-  count = var.events_lambda_function_name != null ? 1 : 0
-
   statement_id  = "AllowExecutionFromApiGatewayEvents"
   action        = "lambda:InvokeFunction"
   function_name = var.events_lambda_function_name

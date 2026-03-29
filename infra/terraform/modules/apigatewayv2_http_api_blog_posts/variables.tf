@@ -16,13 +16,11 @@ variable "lambda_invoke_arn" {
 variable "events_lambda_function_name" {
   description = "Lambda function name used by the POST /events route."
   type        = string
-  default     = null
 }
 
 variable "events_lambda_invoke_arn" {
   description = "Lambda invoke ARN used by the POST /events route."
   type        = string
-  default     = null
 }
 
 variable "cors_allow_origins" {

@@ -15,5 +15,5 @@ output "posts_route_url" {
 
 output "events_route_url" {
   description = "Public URL for the POST /events route."
-  value       = var.events_lambda_invoke_arn != null ? "${aws_apigatewayv2_api.this.api_endpoint}/events" : null
+  value       = "${aws_apigatewayv2_api.this.api_endpoint}/events"
 }
