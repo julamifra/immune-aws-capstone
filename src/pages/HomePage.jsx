@@ -13,10 +13,6 @@ const TeamPreview = lazy(() => import('@/components/HomePage/TeamPreview'));
 const FacilitiesPreview = lazy(
   () => import('@/components/HomePage/FacilitiesPreview')
 );
-const Testimonials = lazy(() => import('@/components/HomePage/Testimonials'));
-const GoogleReviewsCTA = lazy(
-  () => import('@/components/HomePage/GoogleReviewsCTA')
-);
 const CTA = lazy(() => import('@/components/HomePage/CTA'));
 
 const HomePage = () => {
@@ -47,8 +43,6 @@ const HomePage = () => {
         <WhyChooseUs />
         <TeamPreview />
         <FacilitiesPreview />
-        <Testimonials />
-        <GoogleReviewsCTA />
         <CTA />
       </Suspense>
     </>

@@ -5,9 +5,9 @@ export const homePageJsonLd = {
       '@type': 'WebSite',
       '@id': 'https://ioamigo.com/#website',
       url: 'https://ioamigo.com/',
-      name: 'Instituto Oftalmológico Amigó',
+      name: 'Instituto Oftalmologico Amigo',
       description:
-        'Clínica oftalmológica de referencia en Tenerife, especializada en el diagnóstico y tratamiento de enfermedades oculares (Cirugía ocular, glaucoma, cataratas, miopía, cataratas, presbicia...) con la última tecnología.',
+        'Clinica oftalmologica de referencia en Tenerife, especializada en el diagnostico y tratamiento de enfermedades oculares con tecnologia de ultima generacion.',
       publisher: {
         '@id': 'https://ioamigo.com/#organization',
       },
@@ -25,18 +25,18 @@ export const homePageJsonLd = {
       '@type': 'WebPage',
       '@id': 'https://ioamigo.com/#webpage',
       url: 'https://ioamigo.com/',
-      name: 'Instituto Oftalmológico Amigó | Tu Clínica Oftalmológica en Tenerife',
+      name: 'Instituto Oftalmologico Amigo | Tu Clinica Oftalmologica en Tenerife',
       isPartOf: {
         '@id': 'https://ioamigo.com/#website',
       },
       description:
-        'En el Instituto Oftalmológico Amigó en Tenerife, cuidamos de tu salud visual con un equipo de expertos y tecnología de vanguardia. Pide tu cita.',
+        'En el Instituto Oftalmologico Amigo en Tenerife, cuidamos de tu salud visual con un equipo de expertos y tecnologia de vanguardia. Pide tu cita.',
       inLanguage: 'es',
     },
     {
       '@type': 'Organization',
       '@id': 'https://ioamigo.com/#organization',
-      name: 'Instituto Oftalmológico Amigó',
+      name: 'Instituto Oftalmologico Amigo',
       url: 'https://ioamigo.com/',
       logo: {
         '@type': 'ImageObject',
@@ -51,12 +51,12 @@ export const homePageJsonLd = {
     {
       '@type': 'MedicalClinic',
       '@id': 'https://ioamigo.com/#medical-clinic',
-      name: 'Instituto Oftalmológico Amigó',
+      name: 'Instituto Oftalmologico Amigo',
       image:
         'https://vknsnmxtlpzjvopwhxyl.supabase.co/storage/v1/object/public/new-images/logo1.jpg',
       url: 'https://ioamigo.com/',
       telephone: '+34-922-535-971',
-      priceRange: '€€',
+      priceRange: 'EUR',
       address: {
         '@type': 'PostalAddress',
         streetAddress: 'C. de Bravo Murillo, 16',
@@ -81,43 +81,38 @@ export const homePageJsonLd = {
       sameAs: [
         'https://www.instagram.com/oftalmologoamigo/',
         'https://www.youtube.com/@Ioamigo',
-        'https://www.linkedin.com/company/instituto-oftalmol%C3%B3gico-amig%C3%B3/',
+        'https://www.linkedin.com/company/instituto-oftalmologico-amigo/',
       ],
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.1',
-        reviewCount: '92',
-      },
       availableService: [
         {
           '@type': 'MedicalProcedure',
-          name: 'Cirugía Refractiva',
-          description: 'Corrección de defectos refractivos mediante láser',
+          name: 'Cirugia Refractiva',
+          description: 'Correccion de defectos refractivos mediante laser',
         },
         {
           '@type': 'MedicalProcedure',
-          name: 'Operación de Cataratas',
+          name: 'Operacion de Cataratas',
           description:
-            'Cirugía de cataratas con tecnología de última generación',
+            'Cirugia de cataratas con tecnologia de ultima generacion',
         },
         {
           '@type': 'MedicalProcedure',
           name: 'Tratamiento de Glaucoma',
-          description: 'Diagnóstico y tratamiento del glaucoma',
+          description: 'Diagnostico y tratamiento del glaucoma',
         },
         {
           '@type': 'MedicalProcedure',
-          name: 'Cirugía de Retina y Mácula',
-          description: 'Tratamiento de enfermedades de la retina y mácula',
+          name: 'Cirugia de Retina y Macula',
+          description: 'Tratamiento de enfermedades de la retina y macula',
         },
         {
           '@type': 'MedicalProcedure',
-          name: 'Láser Femtosegundo',
+          name: 'Laser Femtosegundo',
           description:
-            'Cirugía ocular con tecnología láser de femtosegundo de última generación',
+            'Cirugia ocular con tecnologia laser de femtosegundo de ultima generacion',
         },
       ],
-      paymentAccepted: 'Efectivo, Tarjeta de crédito, Transferencia bancaria',
+      paymentAccepted: 'Efectivo, Tarjeta de credito, Transferencia bancaria',
       currenciesAccepted: 'EUR',
     },
   ],
