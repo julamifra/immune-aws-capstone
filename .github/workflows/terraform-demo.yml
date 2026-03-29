@@ -1,0 +1,71 @@
+name: Terraform Demo
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "infra/terraform/**"
+      - ".github/workflows/terraform-demo.yml"
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Run terraform apply"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/terraform/environments/demo
+    env:
+      TF_IN_AUTOMATION: true
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      TF_VAR_aws_region: ${{ vars.AWS_REGION }}
+      TF_VAR_project_name: ${{ vars.TF_PROJECT_NAME }}
+      TF_VAR_environment: demo
+      TF_VAR_frontend_bucket_name: ${{ vars.FRONTEND_BUCKET_NAME }}
+      TF_VAR_force_destroy: "false"
+      TF_VAR_enable_versioning: "true"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.11.4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform fmt check
+        run: terraform fmt -check -recursive
+        working-directory: infra/terraform
+
+      - name: Terraform init
+        run: terraform init
+
+      - name: Terraform validate
+        run: terraform validate
+
+      - name: Terraform plan
+        run: terraform plan -out=tfplan
+
+      - name: Terraform apply
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.apply == 'true'
+        run: terraform apply -auto-approve tfplan

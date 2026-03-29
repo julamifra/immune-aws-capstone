@@ -1,119 +1,269 @@
-# ioamigo-website-frontend
+# immune-aws-capstone
 
-> Frontend del sitio web de IO Amigo, una clínica oftalmológica.
+Repositorio del proyecto de migracion de una aplicacion web en React hacia AWS, con infraestructura como codigo en Terraform.
 
-## Tabla de Contenidos
+El repositorio combina dos lineas de trabajo:
 
-- [Sobre el Proyecto](#sobre-el-proyecto)
-- [Tecnologías Utilizadas](#tecnologías-utilizadas)
-- [Cómo Empezar](#cómo-empezar)
-  - [Prerrequisitos](#prerrequisitos)
-  - [Instalación](#instalación)
-- [Scripts Disponibles](#scripts-disponibles)
-- [Scripts para Sitemap](#scripts-para-sitemap)
-- [Despliegue](#despliegue)
-- [Cómo Contribuir](#cómo-contribuir)
-- [Licencia](#licencia)
+- mantener operativo el frontend actual en React
+- construir una arquitectura demo en AWS, simple y reproducible, sobre la que seguir migrando el proyecto
 
-## Sobre el Proyecto
+La infraestructura del proyecto se define con Terraform. En este repositorio, Terraform es la fuente de verdad para AWS.
 
-Este repositorio contiene el código fuente del frontend para el sitio web de IO Amigo. El proyecto está diseñado para proporcionar una interfaz de usuario moderna, rápida y accesible para los pacientes y visitantes de la clínica. Incluye secciones informativas, un blog de noticias y un panel de administración básico para gestionar el contenido.
+## Objetivo del proyecto
 
-## Tecnologías Utilizadas
+Este proyecto persigue dos metas en paralelo:
 
-- **Framework Principal**: [React](https://reactjs.org/) con [Vite](https://vitejs.dev/) para un desarrollo y compilación rápidos.
-- **Estilos**: [Tailwind CSS](https://tailwindcss.com/) para un diseño de utilidades y componentes reutilizables.
-- **Componentes UI**: [Shadcn UI](https://ui.shadcn.com/) (implementado a través de Radix UI y `tailwind-merge`) para componentes de alta calidad y accesibles.
-- **Backend y Base de Datos**: integración en transición desde Supabase hacia una arquitectura basada en AWS.
-- **Enrutamiento**: [React Router](https://reactrouter.com/) para la navegación en la aplicación.
-- **Animaciones**: [Framer Motion](https://www.framer.com/motion/) para animaciones fluidas y declarativas.
-- **Iconos**: [Lucide React](https://lucide.dev/guide/packages/lucide-react) para un conjunto de iconos limpio y consistente.
+- desplegar una version demo o de laboratorio en AWS
+- documentar una arquitectura objetivo mas solida para una evolucion posterior a produccion
 
-## Cómo Empezar
+## Estado actual
 
-Sigue estos pasos para tener una copia local del proyecto funcionando.
+### Frontend
+
+El frontend es una SPA en React construida con Vite. A dia de hoy sigue siendo la base funcional del proyecto y contiene:
+
+- navegacion con React Router
+- estilos con Tailwind CSS
+- componentes reutilizables
+- paginas informativas, blog, contacto y contenido institucional
+
+Parte del codigo todavia conserva integracion heredada con Supabase. Esa dependencia esta en transicion y se ira sustituyendo progresivamente por backend e infraestructura en AWS.
+
+### Infraestructura AWS
+
+La base Terraform ya creada en el repositorio despliega, por ahora, el minimo necesario para la demo del frontend:
+
+- bucket S3 para alojar el frontend compilado
+- configuracion de static website hosting
+- fallback SPA con `index.html`
+- cifrado del bucket
+- versionado
+- politica de lectura publica para la demo
+
+Ruta principal del entorno actual:
+
+- [infra/terraform/environments/demo](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/infra/terraform/environments/demo)
+
+Modulo reutilizable disponible:
+
+- [infra/terraform/modules/s3_frontend](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/infra/terraform/modules/s3_frontend)
+
+## Estructura principal
+
+```text
+/
+  src/                         # Frontend React
+  public/                      # Activos estaticos publicos
+  infra/
+    terraform/
+      modules/
+        s3_frontend/           # Modulo Terraform para hosting del frontend en S3
+      environments/
+        demo/                  # Entorno demo actual
+  scripts/                     # Scripts locales de despliegue y apoyo
+  docs/                        # Documentacion tecnica y funcional
+```
+
+## Stack actual
+
+### Frontend
+
+- React 18
+- Vite
+- React Router
+- Tailwind CSS
+- Radix UI / componentes UI reutilizables
+- Framer Motion
+
+### Infraestructura
+
+- Terraform >= 1.6
+- AWS Provider >= 5.0
+- Amazon S3 static website hosting para la demo inicial
+
+## Ejecucion local del frontend
 
 ### Prerrequisitos
 
-Asegúrate de tener [Node.js](https://nodejs.org/) (la versión se especifica en el archivo `.nvmrc`) y npm instalados.
+- Node.js instalado
+- npm instalado
 
-- npm
-  ```sh
-  npm install npm@latest -g
-  ```
+### Instalacion
 
-### Instalación
+Desde la raiz del proyecto:
 
-1.  Clona el repositorio.
-    ```sh
-    git clone https://github.com/IO-AMIGO/ioamigo-website-frontend.git
-    ```
-2.  Instala las dependencias de NPM.
-    ```sh
-    npm install
-    ```
-3.  Crea un archivo `.env` en la raíz del proyecto y añade las variables de entorno necesarias para conectar con Supabase y la API de Google.
-    ```
-    VITE_SUPABASE_URL=TU_URL_DE_SUPABASE
-    VITE_SUPABASE_ANON_KEY=TU_CLAVE_ANONIMA_DE_SUPABASE
-    GOOGLE_API_KEY=TU_API_KEY_DE_GOOGLE
-    ```
-
-## Scripts Disponibles
-
-En el directorio del proyecto, puedes ejecutar:
-
-- `npm run dev`: Inicia la aplicación en modo de desarrollo.
-- `npm run build`: Compila la aplicación para producción.
-- `npm run preview`: Sirve la compilación de producción localmente para previsualización.
-- `npm run lint`: Ejecuta ESLint para revisar el código en busca de errores y problemas de estilo.
-- `npm run format`: Formatea todo el código con Prettier.
-- `npm run update-urls`: Actualiza la lista de URLs del sitio y el sitemap.
-
-## Scripts para Sitemap
-
-Este script, ubicado en la carpeta `scripts/`, se utiliza para mantener actualizada la lista de URLs del sitio y el `sitemap.xml`.
-
-### Fichero clave
-
-- **`updateUrlsAndSitemap.js`**: Script que genera dos ficheros clave: `scripts/data/all_urls.js` (un listado de todas las URLs del sitio) y `public/sitemap.xml`. Actualiza el sitemap de forma inteligente, añadiendo solo las URLs nuevas.
-
-### Flujo de trabajo
-
-#### Actualizar sitemap y listado de URLs
-
-Este comando actualiza tanto el `sitemap.xml` como el fichero `all_urls.js`.
-
-```sh
-npm run update-urls
+```powershell
+npm install
 ```
 
-Si solo deseas actualizar el fichero `all_urls.js` sin modificar el sitemap, puedes usar el flag `--urls-only`:
+### Desarrollo local
 
-```sh
-npm run update-urls -- --urls-only
+```powershell
+npm run dev
 ```
 
-**Nota:** El doble guion (`--`) es necesario para que npm pase el flag correctamente al script.
+### Build de produccion
 
-## Despliegue
+```powershell
+npm run build
+```
 
-El proyecto utiliza GitHub Actions para automatizar el despliegue. Revisa los archivos en la carpeta `.github/workflows` para más detalles sobre los flujos de CI/CD.
+### Previsualizar el build
 
-- **deploy.yml**: Despliega la rama `main` al entorno de producción.
-- **deploy-maintenance.yml**: Activa un modo de mantenimiento.
-- **restore-from-maintenance.yml**: Desactiva el modo de mantenimiento.
+```powershell
+npm run preview
+```
 
-## Cómo Contribuir
+## Scripts disponibles
 
-Las contribuciones son bienvenidas. Si deseas contribuir, por favor sigue estos pasos:
+- `npm run dev`: levanta el frontend en desarrollo
+- `npm run build`: genera el build de produccion en `dist/`
+- `npm run preview`: sirve localmente el build generado
+- `npm run lint`: ejecuta ESLint
+- `npm run format`: formatea el codigo con Prettier
+- `npm run tf:demo:init`: inicializa Terraform para el entorno demo
+- `npm run tf:demo:plan`: genera el plan de Terraform del entorno demo
+- `npm run tf:demo:apply`: aplica la infraestructura del entorno demo
+- `npm run tf:demo:output`: muestra los outputs del entorno demo
+- `npm run deploy:frontend:demo`: genera el build y lo sincroniza con el bucket S3 del frontend
+- `npm run deploy:demo`: ejecuta el flujo local completo de demo
 
-1.  Haz un Fork del Proyecto.
-2.  Crea tu Feature Branch (`git checkout -b feature/AmazingFeature`).
-3.  Haz Commit de tus Cambios (`git commit -m '''Add some AmazingFeature'''`).
-4.  Haz Push a la Branch (`git push origin feature/AmazingFeature`).
-5.  Abre un Pull Request.
+## Configuracion local necesaria
 
-## Licencia
+### AWS CLI
 
-Este proyecto es privado y no tiene una licencia de código abierto. Todos los derechos están reservados.
+Debes tener AWS CLI instalado y configurado localmente:
+
+```powershell
+aws --version
+aws configure
+aws sts get-caller-identity
+```
+
+### Variables del frontend
+
+Las variables `VITE_*` se resuelven durante el build, no en el bucket S3. Para despliegue local usa un archivo `.env.production.local` en la raiz del proyecto.
+
+Ejemplo temporal:
+
+```text
+VITE_SUPABASE_URL=https://example.invalid
+VITE_SUPABASE_ANON_KEY=fake-anon-key-demo
+```
+
+Eso permite compilar el frontend mientras el backend real sigue en transicion. Si el frontend intenta usar Supabase de verdad, la llamada fallara en runtime.
+
+### Variables de Terraform
+
+En [infra/terraform/environments/demo](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/infra/terraform/environments/demo), copia el archivo de ejemplo:
+
+```powershell
+Copy-Item infra\terraform\environments\demo\terraform.tfvars.example infra\terraform\environments\demo\terraform.tfvars
+```
+
+Despues ajusta al menos:
+
+- `aws_region`
+- `project_name`
+- `frontend_bucket_name`
+
+`frontend_bucket_name` debe ser globalmente unico en AWS.
+
+## Flujo local de despliegue
+
+### Opcion recomendada
+
+Desde la raiz del proyecto:
+
+```powershell
+npm run deploy:demo
+```
+
+Ese comando ejecuta:
+
+- `terraform plan`
+- `terraform apply`
+- `npm run build`
+- `aws s3 sync` de `dist/` al bucket S3 del frontend
+
+### Despliegue por partes
+
+Si prefieres separar infraestructura y aplicacion:
+
+```powershell
+npm run tf:demo:init
+npm run tf:demo:plan
+npm run tf:demo:apply
+npm run deploy:frontend:demo
+```
+
+Si solo quieres volver a publicar el frontend sin tocar Terraform:
+
+```powershell
+npm run deploy:frontend:demo
+```
+
+### Outputs utiles
+
+Para ver los valores generados por Terraform:
+
+```powershell
+npm run tf:demo:output
+```
+
+Terraform devolvera valores como:
+
+- `frontend_bucket_name`
+- `frontend_website_endpoint`
+- `frontend_website_domain`
+
+La URL del website endpoint de S3 para la demo debe abrirse con `http`, no con `https`.
+
+## Scripts locales de despliegue
+
+Los scripts que soportan el flujo local estan en:
+
+- [scripts/terraform-demo.ps1](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/scripts/terraform-demo.ps1)
+- [scripts/deploy-frontend-demo.ps1](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/scripts/deploy-frontend-demo.ps1)
+- [scripts/deploy-demo-all.ps1](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/scripts/deploy-demo-all.ps1)
+
+Resumen de funciones:
+
+- `terraform-demo.ps1`: inicializa, planifica, aplica, muestra outputs o destruye el entorno demo
+- `deploy-frontend-demo.ps1`: hace build y sincroniza `dist/` con el bucket de frontend recuperado desde Terraform
+- `deploy-demo-all.ps1`: encadena `plan`, `apply` y despliegue del frontend
+
+## CI/CD futuro con GitHub Actions
+
+Mas adelante se puede documentar una automatizacion equivalente con GitHub Actions. De momento no es el flujo principal del proyecto.
+
+Workflows ya preparados como referencia futura:
+
+- [deploy-frontend-demo.yml](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/.github/workflows/deploy-frontend-demo.yml)
+- [terraform-demo.yml](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/.github/workflows/terraform-demo.yml)
+
+## Hoja de ruta de infraestructura
+
+La base actual ya permite empezar con el frontend en S3. Los siguientes bloques previstos, alineados con el alcance del proyecto, son:
+
+1. bucket adicional para assets
+2. tablas DynamoDB
+3. IAM minimo necesario
+4. Lambdas del backend
+5. API Gateway
+6. observabilidad en CloudWatch
+
+## Sobre el despliegue anterior
+
+El proyecto venia de una etapa anterior con despliegue frontend y CI/CD orientado a otro stack. En el repositorio aun existen workflows heredados en:
+
+- [deploy.yml](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/.github/workflows/deploy.yml)
+- [deploy-maintenance.yml](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/.github/workflows/deploy-maintenance.yml)
+- [restore-from-maintenance.yml](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/.github/workflows/restore-from-maintenance.yml)
+
+Esos flujos deben considerarse heredados del despliegue anterior mientras no se readapten al nuevo flujo basado en AWS y Terraform.
+
+## Documentacion relacionada
+
+- [AGENTS.md](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/AGENTS.md)
+- [infra/terraform/environments/demo/README.md](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/infra/terraform/environments/demo/README.md)
