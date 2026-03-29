@@ -1,19 +1,28 @@
 # Terraform Demo Environment
 
-This environment creates the minimum AWS infrastructure needed for the demo deployment.
+This environment creates the AWS infrastructure currently deployed for the demo and lab setup.
 
 ## Resources created
 
 - 1 S3 bucket for frontend static files
 - 1 S3 bucket for blog assets
 - 1 DynamoDB table for blog posts
-- 1 IAM role for the blog listing Lambda
 - 1 Lambda function to list published blog posts
-- 1 API Gateway HTTP API route (`GET /blog`)
+- 1 API Gateway HTTP API with route `GET /blog`
 - S3 website configuration for the frontend (`index.html` fallback for SPA routes)
 - Public-read access for demo frontend files and demo blog assets
 - Server-side encryption (AES256)
 - Object versioning for both buckets
+
+## Notes about IAM in the lab
+
+Lambda and API Gateway are deployed with Terraform in this environment.
+
+The only part not created by Terraform in the lab is the execution role. The Lambda reuses the existing `LabRole`, which must keep permissions to:
+
+- write logs to CloudWatch
+- read the `BlogPosts` DynamoDB table
+- query the `status-publishedAt-index`
 
 ## Usage
 
@@ -23,8 +32,9 @@ This environment creates the minimum AWS infrastructure needed for the demo depl
 3. Set globally unique values for:
    - `frontend_bucket_name`
    - `assets_bucket_name`
-4. Set a value for:
+4. Set values for:
    - `blog_posts_table_name`
+   - `lambda_execution_role_name`
 5. Run:
 
 ```bash
@@ -42,6 +52,8 @@ After apply, Terraform prints values such as:
 - `blog_posts_table_name`
 - `blog_posts_slug_index_name`
 - `blog_posts_status_published_at_index_name`
+- `blog_lambda_execution_role_name`
+- `blog_lambda_execution_role_arn`
 - `blog_list_posts_lambda_name`
 - `blog_api_endpoint`
 - `blog_posts_route_url`
@@ -60,4 +72,4 @@ Then run:
 npm run tf:demo:output
 ```
 
-Use `blog_posts_route_url` to test the first blog endpoint.
+And test the `blog_posts_route_url` output to validate the first blog API endpoint.

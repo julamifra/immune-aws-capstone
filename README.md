@@ -34,11 +34,17 @@ Parte del codigo todavia conserva integracion heredada con Supabase. Esa depende
 La base Terraform ya creada en el repositorio despliega, por ahora, el minimo necesario para la demo del frontend:
 
 - bucket S3 para alojar el frontend compilado
+- bucket S3 adicional para assets del blog
+- tabla DynamoDB `BlogPosts`
+- Lambda `GET /blog` para listar posts publicados
+- API Gateway HTTP API con la ruta `GET /blog`
 - configuracion de static website hosting
 - fallback SPA con `index.html`
 - cifrado del bucket
 - versionado
 - politica de lectura publica para la demo
+
+La Lambda del blog y el API Gateway si se despliegan con Terraform. Lo unico que no se crea con Terraform en este entorno de laboratorio es el role IAM, ya que se reutiliza el role existente `LabRole`.
 
 Ruta principal del entorno actual:
 
@@ -47,6 +53,8 @@ Ruta principal del entorno actual:
 Modulo reutilizable disponible:
 
 - [infra/terraform/modules/s3_frontend](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/infra/terraform/modules/s3_frontend)
+- [infra/terraform/modules/lambda_blog_list_posts](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/infra/terraform/modules/lambda_blog_list_posts)
+- [infra/terraform/modules/apigatewayv2_http_api_blog_posts](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/infra/terraform/modules/apigatewayv2_http_api_blog_posts)
 
 ## Estructura principal
 
@@ -125,6 +133,7 @@ npm run preview
 - `npm run tf:demo:plan`: genera el plan de Terraform del entorno demo
 - `npm run tf:demo:apply`: aplica la infraestructura del entorno demo
 - `npm run tf:demo:output`: muestra los outputs del entorno demo
+- `npm run seed:blog:demo`: carga una pequena semilla de posts demo en DynamoDB
 - `npm run deploy:frontend:demo`: genera el build y lo sincroniza con el bucket S3 del frontend
 - `npm run deploy:demo`: ejecuta el flujo local completo de demo
 
@@ -166,8 +175,11 @@ Despues ajusta al menos:
 - `aws_region`
 - `project_name`
 - `frontend_bucket_name`
+- `assets_bucket_name`
+- `blog_posts_table_name`
+- `lambda_execution_role_name`
 
-`frontend_bucket_name` debe ser globalmente unico en AWS.
+`frontend_bucket_name` y `assets_bucket_name` deben ser globalmente unicos en AWS.
 
 ## Flujo local de despliegue
 
@@ -216,20 +228,54 @@ Terraform devolvera valores como:
 - `frontend_bucket_name`
 - `frontend_website_endpoint`
 - `frontend_website_domain`
+- `assets_bucket_name`
+- `assets_public_base_url`
+- `blog_posts_table_name`
+- `blog_posts_slug_index_name`
+- `blog_posts_status_published_at_index_name`
+- `blog_lambda_execution_role_name`
+- `blog_lambda_execution_role_arn`
+- `blog_list_posts_lambda_name`
+- `blog_api_endpoint`
+- `blog_posts_route_url`
 
 La URL del website endpoint de S3 para la demo debe abrirse con `http`, no con `https`.
+
+### Carga inicial de posts demo
+
+Despues de aplicar Terraform, puedes cargar una pequena semilla de posts en la tabla `BlogPosts` con:
+
+```powershell
+npm run seed:blog:demo
+```
+
+Ese comando:
+
+- obtiene el nombre real de la tabla desde Terraform
+- inserta dos posts de ejemplo
+- deja lista una base minima para futuras pruebas del backend y del blog
+
+Despues puedes ejecutar:
+
+```powershell
+npm run tf:demo:output
+```
+
+Y probar la URL `blog_posts_route_url` para comprobar la primera API del blog.
 
 ## Scripts locales de despliegue
 
 Los scripts que soportan el flujo local estan en:
 
 - [scripts/terraform-demo.ps1](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/scripts/terraform-demo.ps1)
+- [scripts/seed-blog-posts-demo.ps1](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/scripts/seed-blog-posts-demo.ps1)
 - [scripts/deploy-frontend-demo.ps1](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/scripts/deploy-frontend-demo.ps1)
 - [scripts/deploy-demo-all.ps1](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/scripts/deploy-demo-all.ps1)
 
 Resumen de funciones:
 
 - `terraform-demo.ps1`: inicializa, planifica, aplica, muestra outputs o destruye el entorno demo
+- `seed-blog-posts-demo.ps1`: carga una pequena semilla manual de posts demo en DynamoDB
 - `deploy-frontend-demo.ps1`: hace build y sincroniza `dist/` con el bucket de frontend recuperado desde Terraform
 - `deploy-demo-all.ps1`: encadena `plan`, `apply` y despliegue del frontend
 
@@ -246,12 +292,21 @@ Workflows ya preparados como referencia futura:
 
 La base actual ya permite empezar con el frontend en S3. Los siguientes bloques previstos, alineados con el alcance del proyecto, son:
 
-1. bucket adicional para assets
-2. tablas DynamoDB
-3. IAM minimo necesario
-4. Lambdas del backend
-5. API Gateway
-6. observabilidad en CloudWatch
+1. endpoint de detalle de posts por `slug` o `postId`
+2. Lambda del formulario de contacto
+3. adaptacion del frontend para dejar de depender de Supabase
+4. observabilidad en CloudWatch
+5. endurecimiento progresivo de la arquitectura demo
+
+## Nota sobre Lambda y API Gateway
+
+En este entorno `demo`, tanto Lambda como API Gateway se despliegan con Terraform.
+
+Para adaptarse al laboratorio, el role IAM no se crea con Terraform y la Lambda usa el role existente `LabRole`. Ese role debe seguir teniendo permisos suficientes para:
+
+- escribir logs en CloudWatch
+- leer la tabla `BlogPosts`
+- consultar el indice `status-publishedAt-index`
 
 ## Sobre el despliegue anterior
 
