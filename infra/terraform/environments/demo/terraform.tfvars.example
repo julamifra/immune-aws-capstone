@@ -2,10 +2,13 @@ aws_region           = "eu-west-1"
 project_name         = "ioamigo-website"
 environment          = "demo"
 frontend_bucket_name = "ioamigo-demo-frontend-CHANGE-ME-123456"
+assets_bucket_name   = "ioamigo-demo-assets-CHANGE-ME-123456"
+blog_posts_table_name = "ioamigo-demo-blog-posts"
 
 # Set to true only for short-lived demo environments.
-force_destroy     = false
-enable_versioning = true
+force_destroy                        = false
+enable_versioning                    = true
+enable_dynamodb_point_in_time_recovery = false
 
 tags = {
   Owner       = "julam"

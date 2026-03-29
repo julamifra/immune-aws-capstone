@@ -19,6 +19,16 @@ variable "frontend_bucket_name" {
   type        = string
 }
 
+variable "assets_bucket_name" {
+  description = "Global unique name of the S3 bucket used for blog assets."
+  type        = string
+}
+
+variable "blog_posts_table_name" {
+  description = "Name of the DynamoDB table used for blog posts."
+  type        = string
+}
+
 variable "force_destroy" {
   description = "Allow destroy on non-empty bucket for demo lifecycle."
   type        = bool
@@ -29,6 +39,12 @@ variable "enable_versioning" {
   description = "Enable bucket versioning."
   type        = bool
   default     = true
+}
+
+variable "enable_dynamodb_point_in_time_recovery" {
+  description = "Enable point-in-time recovery for DynamoDB blog posts table."
+  type        = bool
+  default     = false
 }
 
 variable "tags" {
