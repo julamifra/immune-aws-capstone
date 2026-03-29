@@ -1,5 +1,4 @@
 const IMAGE_BASE_URL = import.meta.env.VITE_ASSETS_BASE_URL;
-console.log('IMAGE_BASE_URL:', IMAGE_BASE_URL);
 const UNSPLASH_BASE = 'https://images.unsplash.com/photo-';
 
 export const imageUrls = {
