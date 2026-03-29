@@ -11,17 +11,9 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, User, Tag, ChevronRight } from 'lucide-react';
-import { BlogItemActions } from './BlogItemActions';
 import { routePaths } from '@/config/routes';
 
-const BlogList = ({
-  newsItems,
-  isAuthenticated,
-  onEdit,
-  onDelete,
-  searchTerm,
-  viewMode,
-}) => {
+const BlogList = ({ newsItems, searchTerm, viewMode }) => {
   if (newsItems.length === 0) {
     return (
       <motion.p
@@ -31,7 +23,7 @@ const BlogList = ({
       >
         {searchTerm
           ? 'No se encontraron noticias con los filtros seleccionados.'
-          : 'Aún no hay noticias publicadas relacionadas con esta categoría.'}
+          : 'Aun no hay noticias publicadas relacionadas con esta categoria.'}
       </motion.p>
     );
   }
@@ -64,20 +56,12 @@ const BlogList = ({
                 asChild
                 variant="outline"
                 size="icon"
-                aria-label="Leer más"
+                aria-label="Leer mas"
               >
                 <Link to={`${routePaths.blog}/${item.slug}`}>
                   <ChevronRight className="w-4 h-4" />
                 </Link>
               </Button>
-              {isAuthenticated && (
-                <BlogItemActions
-                  post={item}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                  viewMode={viewMode}
-                />
-              )}
             </div>
           </motion.div>
         ))}
@@ -157,21 +141,11 @@ const BlogList = ({
                   className="text-brand-DEFAULT hover:text-brand-dark p-0 text-sm"
                 >
                   <Link to={`${routePaths.blog}/${item.slug}`}>
-                    Leer más <ChevronRight className="w-4 h-4 ml-1" />
+                    Leer mas <ChevronRight className="w-4 h-4 ml-1" />
                   </Link>
                 </Button>
               </div>
             </CardFooter>
-            {isAuthenticated && (
-              <div className="mt-4 p-4 border-t border-gray-200">
-                <BlogItemActions
-                  post={item}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                  viewMode={viewMode}
-                />
-              </div>
-            )}
           </Card>
         </motion.div>
       ))}

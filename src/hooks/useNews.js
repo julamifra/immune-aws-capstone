@@ -1,10 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import {
-  fetchNews as fetchNewsService,
-  addNews as addNewsService,
-  updateNews as updateNewsService,
-  deleteNews as deleteNewsService,
-} from '@/services/newsService';
+import { fetchNews as fetchNewsService } from '@/services/newsService';
 
 const useNews = (
   page = 1,
@@ -45,73 +40,11 @@ const useNews = (
     fetchNews();
   }, [fetchNews]);
 
-  const addNews = useCallback(
-    async (newPostData) => {
-      setLoading(true);
-      try {
-        const newPost = await addNewsService(newPostData);
-        fetchNews();
-        return newPost;
-      } catch (err) {
-        console.error('Error adding news to Supabase:', err);
-        setError(err.message || 'Failed to add news');
-        throw err;
-      } finally {
-        setLoading(false);
-      }
-    },
-    [fetchNews]
-  );
-
-  const updateNews = useCallback(
-    async (postId, updatedPostData) => {
-      setLoading(true);
-      try {
-        const updatedPost = await updateNewsService(postId, updatedPostData);
-        fetchNews();
-        return updatedPost;
-      } catch (err) {
-        console.error('Error updating news in Supabase:', err);
-        setError(err.message || 'Failed to update news');
-        throw err;
-      } finally {
-        setLoading(false);
-      }
-    },
-    [fetchNews]
-  );
-
-  const deleteNews = useCallback(
-    async (postId) => {
-      setLoading(true);
-      try {
-        await deleteNewsService(postId);
-        fetchNews();
-        return postId;
-      } catch (err) {
-        console.error('Error deleting news from Supabase:', err);
-        setError(err.message || 'Failed to delete news');
-        throw err;
-      } finally {
-        setLoading(false);
-      }
-    },
-    [fetchNews]
-  );
-
-  const refreshNews = useCallback(() => {
-    fetchNews();
-  }, [fetchNews]);
-
   return {
     news,
     loading,
     error,
     totalPages,
-    addNews,
-    updateNews,
-    deleteNews,
-    refreshNews,
   };
 };
 
