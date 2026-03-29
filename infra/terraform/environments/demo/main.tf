@@ -2,6 +2,10 @@ provider "aws" {
   region = var.aws_region
 }
 
+data "aws_caller_identity" "current" {}
+
+data "aws_partition" "current" {}
+
 locals {
   common_tags = merge(
     {
@@ -11,6 +15,7 @@ locals {
     },
     var.tags
   )
+  lambda_execution_role_arn = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:role/${var.lambda_execution_role_name}"
 }
 
 module "frontend_site" {
@@ -41,22 +46,11 @@ module "blog_posts" {
   tags                          = local.common_tags
 }
 
-module "blog_posts_reader_role" {
-  source = "../../modules/iam_lambda_dynamodb_read_role"
-
-  role_name = "${var.project_name}-${var.environment}-blog-posts-reader-role"
-  table_arn = module.blog_posts.table_arn
-  index_arns = [
-    "${module.blog_posts.table_arn}/index/${module.blog_posts.status_published_at_index_name}"
-  ]
-  tags = local.common_tags
-}
-
 module "blog_list_posts_lambda" {
   source = "../../modules/lambda_blog_list_posts"
 
   function_name                  = "${var.project_name}-${var.environment}-blog-list-posts"
-  role_arn                       = module.blog_posts_reader_role.role_arn
+  role_arn                       = local.lambda_execution_role_arn
   source_dir                     = "${path.root}/../../../../backend/lambdas/blog/list-posts"
   output_path                    = "${path.root}/${var.project_name}-${var.environment}-blog-list-posts.zip"
   blog_posts_table_name          = module.blog_posts.table_name

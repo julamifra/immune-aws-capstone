@@ -38,9 +38,14 @@ output "blog_posts_status_published_at_index_name" {
   value       = module.blog_posts.status_published_at_index_name
 }
 
-output "blog_posts_reader_role_name" {
-  description = "IAM role name used by the blog list Lambda."
-  value       = module.blog_posts_reader_role.role_name
+output "blog_lambda_execution_role_name" {
+  description = "Existing IAM role name used by the blog Lambda."
+  value       = var.lambda_execution_role_name
+}
+
+output "blog_lambda_execution_role_arn" {
+  description = "Existing IAM role ARN used by the blog Lambda."
+  value       = local.lambda_execution_role_arn
 }
 
 output "blog_list_posts_lambda_name" {

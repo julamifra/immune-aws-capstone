@@ -47,6 +47,12 @@ variable "enable_dynamodb_point_in_time_recovery" {
   default     = false
 }
 
+variable "lambda_execution_role_name" {
+  description = "Existing IAM role name used by the demo Lambda."
+  type        = string
+  default     = "LabRole"
+}
+
 variable "api_cors_allow_origins" {
   description = "Allowed origins for the demo HTTP API CORS configuration."
   type        = list(string)
