@@ -314,16 +314,6 @@ Para adaptarse al laboratorio, el role IAM no se crea con Terraform y la Lambda 
 - leer la tabla `BlogPosts`
 - consultar el indice `status-publishedAt-index`
 
-## Sobre el despliegue anterior
-
-El proyecto venia de una etapa anterior con despliegue frontend y CI/CD orientado a otro stack. En el repositorio aun existen workflows heredados en:
-
-- [deploy.yml](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/.github/workflows/deploy.yml)
-- [deploy-maintenance.yml](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/.github/workflows/deploy-maintenance.yml)
-- [restore-from-maintenance.yml](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/.github/workflows/restore-from-maintenance.yml)
-
-Esos flujos deben considerarse heredados del despliegue anterior mientras no se readapten al nuevo flujo basado en AWS y Terraform.
-
 ## Documentacion relacionada
 
 - [AGENTS.md](C:/Users/julam/Desktop/mis_codigos/immune-aws-capstone/AGENTS.md)
