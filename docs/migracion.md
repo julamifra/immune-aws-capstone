@@ -28,20 +28,9 @@ Aunque en los apuntes del master aparece AWS CDK como opcion habitual para despl
 - encaja bien con una demo simple de laboratorio
 - permite dejar una base facilmente ampliable para siguientes fases de la migracion
 
-## Trabajo realizado hasta ahora
+## Trabajo realizado:
 
-### 1. Reorientacion del repositorio hacia la migracion a AWS
-
-Se ha revisado la documentacion principal del proyecto para dejar de describir exclusivamente el despliegue heredado del frontend y pasar a reflejar el nuevo enfoque de migracion a AWS.
-
-En esta fase se ha dejado claro que:
-
-- el frontend sigue siendo una SPA en React
-- el despliegue demo del frontend se hace como build estatica
-- la infraestructura del proyecto se define con Terraform
-- la demo inicial se apoya en Amazon S3 static website hosting
-
-### 2. Preparacion de la infraestructura base en Terraform para la demo
+### 1. Preparacion de la infraestructura base en Terraform para la demo
 
 Se ha identificado y preparado el entorno inicial de Terraform para la demo en:
 
@@ -59,8 +48,6 @@ La infraestructura creada en esta primera fase cubre el hosting minimo del front
 - cifrado del bucket
 - versionado
 - politica de lectura publica para la URL de website del bucket
-
-Esta decision responde al objetivo de mantener una demo viable en laboratorio, evitando introducir todavia servicios adicionales como CloudFront mientras no sean imprescindibles.
 
 ### 3. Despliegue del frontend como sitio estatico en S3
 
@@ -92,8 +79,6 @@ Para no bloquear la compilacion mientras el backend real sigue en transicion, se
 
 Esta decision permite seguir avanzando en la migracion de infraestructura sin tener que completar todavia la sustitucion funcional total del backend.
 
-Se trata de una medida transitoria y controlada. La aplicacion puede compilar y desplegarse, aunque cualquier funcionalidad que dependa realmente de Supabase seguira necesitando ser migrada en siguientes fases.
-
 ### 5. Automatizacion local del flujo de despliegue
 
 Se ha definido un flujo de ejecucion local para simplificar el despliegue de la demo sin depender todavia de CI/CD en remoto.
@@ -111,12 +96,6 @@ Este enfoque permite:
 - reducir errores manuales
 - dejar una base clara para una futura automatizacion con GitHub Actions si se desea
 
-### 6. Limpieza de restos del flujo anterior del frontend
-
-Como parte de la reorganizacion del proyecto, tambien se han eliminado elementos que ya no aportaban valor al nuevo flujo de migracion, incluyendo comandos y artefactos asociados a tareas antiguas del frontend que no forman parte del despliegue actual en AWS.
-
-Con ello se ha dejado una base documental y operativa mas alineada con el objetivo real del proyecto.
-
 ## Resultado actual de la migracion
 
 En el momento actual puede considerarse completada la primera fase de la migracion demo del frontend:
@@ -132,7 +111,7 @@ En el momento actual puede considerarse completada la primera fase de la migraci
 
 Tras cerrar la base inicial del frontend, se ha empezado la siguiente etapa de migracion centrada en persistencia y almacenamiento complementario en AWS.
 
-### 7. Incorporacion de un bucket S3 adicional para assets
+### 6. Incorporacion de un bucket S3 adicional para assets
 
 Se ha añadido un nuevo modulo Terraform para crear un bucket S3 destinado a almacenar assets del blog y otros recursos estaticos desacoplados del frontend principal.
 
@@ -141,9 +120,7 @@ Este bucket responde a una necesidad distinta del bucket de hosting del frontend
 - el bucket del frontend sirve el build de la SPA
 - el bucket de assets se reserva para imagenes y recursos del blog
 
-La separacion mejora la claridad de la arquitectura y prepara mejor la futura evolucion hacia una capa de distribucion mas completa.
-
-### 8. Incorporacion de la tabla DynamoDB `BlogPosts`
+### 7. Incorporacion de la tabla DynamoDB `BlogPosts`
 
 Se ha añadido un modulo Terraform especifico para la tabla `BlogPosts`, siguiendo el modelo de acceso definido para la migracion.
 
@@ -161,7 +138,7 @@ Con esta estructura se cubren ya los accesos minimos previstos para la demo:
 
 Esta decision evita depender de un modelo relacional heredado y deja una base mas alineada con un backend serverless sencillo.
 
-### 9. Integracion de los nuevos recursos en el entorno demo
+### 8. Integracion de los nuevos recursos en el entorno demo
 
 El entorno Terraform `demo` ya no se limita al bucket del frontend. A partir de esta fase incluye:
 
@@ -176,7 +153,7 @@ Tambien se han ampliado los outputs para facilitar las siguientes fases de traba
 - nombre de la tabla `BlogPosts`
 - nombres de los indices de consulta
 
-### 10. Preparacion de una semilla de datos demo
+### 9. Preparacion de una semilla de datos demo
 
 Se ha preparado un flujo local sencillo para insertar una pequena carga inicial de posts demo en la tabla `BlogPosts`.
 
@@ -186,9 +163,7 @@ El objetivo de esta carga no es simular un proceso completo de migracion de dato
 - validar la tabla y sus indices
 - dejar lista la base para la futura Lambda del blog y su exposicion por API Gateway
 
-Este paso reduce riesgo en la siguiente fase, ya que permite trabajar primero con datos reales de prueba antes de integrar el backend completo.
-
-### 11. Incorporacion de la Lambda del blog reutilizando `LabRole`
+### 10. Incorporacion de la Lambda del blog reutilizando `LabRole`
 
 Se ha preparado la primera Lambda funcional del proyecto para listar posts publicados desde DynamoDB.
 
@@ -196,7 +171,7 @@ En lugar de crear un role IAM nuevo con Terraform, el despliegue de laboratorio 
 
 Con este ajuste se evita el bloqueo de permisos relacionado con `iam:CreateRole` y se mantiene la demo alineada con las restricciones reales del laboratorio.
 
-### 12. Exposicion inicial mediante API Gateway
+### 11. Exposicion inicial mediante API Gateway
 
 Tambien se ha dejado integrada una capa minima de API Gateway HTTP API para publicar la ruta:
 
@@ -204,7 +179,7 @@ Tambien se ha dejado integrada una capa minima de API Gateway HTTP API para publ
 
 De este modo, el backend demo vuelve a ser desplegable en AWS dentro de las limitaciones del laboratorio, siempre que `LabRole` conserve permisos de ejecucion y lectura sobre DynamoDB.
 
-### 13. Despliegue efectivo y validacion del backend demo
+### 12. Despliegue efectivo y validacion del backend demo
 
 Tras los ajustes necesarios por las restricciones IAM del laboratorio, se ha ejecutado correctamente el despliegue del backend demo con Terraform.
 
@@ -218,7 +193,27 @@ En esta fase se ha confirmado:
 
 Con ello queda validado que la arquitectura minima del backend del blog ya funciona de extremo a extremo dentro del entorno de laboratorio.
 
-### 14. Estado actual tras esta fase
+### 14. Incorporacion del registro de eventos del frontend en CloudWatch
+
+Se ha preparado una ruta adicional en API Gateway para recibir eventos del frontend y registrarlos en CloudWatch a traves de una Lambda dedicada.
+
+Con esta ampliacion:
+
+- el frontend deja de depender de la funcion heredada de Supabase para `logEvent`
+- los eventos de interaccion del usuario se envian a `POST /events`
+- una Lambda especifica escribe esos eventos en CloudWatch Logs mediante logging estructurado
+- la observabilidad basica del proyecto queda alineada con servicios nativos de AWS
+
+### 15. Estado actual tras esta fase
+
+Ademas de la infraestructura ya desplegada, se ha completado la migracion de los recursos multimedia del frontend al bucket S3 de assets de la demo.
+
+En esta fase se ha dejado resuelto que:
+
+- las imagenes del proyecto se sirven desde el bucket de assets en AWS
+- los videos del frontend se sirven tambien desde ese mismo bucket
+- el frontend ya no depende de Supabase Storage para cargar esos recursos
+- la base publica de assets queda alineada con los outputs de Terraform del entorno `demo`
 
 En este punto, la demo desplegable en AWS ya incluye:
 
@@ -227,7 +222,9 @@ En este punto, la demo desplegable en AWS ya incluye:
 - tabla DynamoDB `BlogPosts`
 - semilla manual de posts demo
 - Lambda de listado de posts reutilizando `LabRole`
+- Lambda de registro de eventos reutilizando `LabRole`
 - API Gateway con un endpoint funcional del blog
+- API Gateway con un endpoint funcional de eventos
 
 Esto supone que la migracion ya ha cubierto:
 
@@ -236,18 +233,7 @@ Esto supone que la migracion ya ha cubierto:
 3. DynamoDB
 4. primera Lambda del backend
 5. primera exposicion por API Gateway
-
-### 15. Decision operativa para el entorno demo del laboratorio
-
-Finalmente, el entorno `demo` se ha adaptado para aprovechar un recurso ya existente del laboratorio en lugar de intentar modelar todo IAM desde Terraform.
-
-La decision adoptada ha sido:
-
-- mantener S3 y DynamoDB gestionados por Terraform
-- desplegar Lambda y API Gateway desde Terraform
-- reutilizar `LabRole` como execution role de la Lambda
-
-Con ello se consigue una demo funcional sin depender de permisos IAM que la cuenta de laboratorio no concede para crear roles nuevos.
+6. observabilidad inicial en CloudWatch para eventos del frontend
 
 ## Diferencia entre demo actual y arquitectura objetivo
 
@@ -269,14 +255,64 @@ Con ello se consigue una demo funcional sin depender de permisos IAM que la cuen
 
 ## Proximos pasos previstos
 
-Tras cerrar esta nueva fase, los siguientes bloques naturales de la migracion son:
+Tras cerrar esta fase, el alcance pendiente de la migracion queda acotado a dos piezas funcionales no implementadas por limitacion de tiempo:
 
-1. incorporar lectura por `slug` o `postId` para detalle de posts
-2. anadir la Lambda del formulario de contacto
-3. adaptar el frontend para consumir API Gateway en lugar de Supabase
-4. ampliar observabilidad y validar el flujo end-to-end
-5. endurecer progresivamente la arquitectura demo sin salir del alcance del laboratorio
+1. incorporar un endpoint de detalle del blog por `slug` o `postId`, con su Lambda correspondiente
+2. anadir el endpoint del formulario de contacto, con su Lambda correspondiente
 
-## Nota de uso
+Con ello, la migracion funcional prevista para la demo quedaria esencialmente completada dentro del alcance definido para el proyecto.
 
-Este documento debe actualizarse de forma incremental conforme avance la migracion. La idea es recoger no solo lo que se implemente, sino tambien las decisiones tecnicas y las razones por las que se adopta cada paso.
+## Mejoras futuras recomendadas
+
+Una vez completado el alcance principal de la demo, se identifican varias mejoras razonables que no son imprescindibles para cerrar la migracion, pero que aportarian solidez tecnica adicional.
+
+### 1. CloudFront delante del frontend y del bucket de assets
+
+Seria la mejora de arquitectura mas natural respecto a la version demo actual.
+
+Sus ventajas principales serian:
+
+- servir el frontend y los assets por `https`
+- mejorar cacheo y rendimiento
+- acercar la demo a una arquitectura mas realista de produccion
+- evitar depender del website endpoint de S3 como punto final publico
+
+Esta mejora se deja como recomendacion clara para una evolucion posterior, ya que la demo actual se ha mantenido deliberadamente simple para ajustarse al alcance del laboratorio.
+
+En el laboratorio actual tampoco se ha implementado CloudFront, tanto por mantener la demo en un nivel de complejidad controlado como por las limitaciones operativas y de permisos del entorno, que aconsejan no depender de servicios adicionales fuera del nucleo minimo necesario.
+
+### 2. CloudWatch Alarms para errores basicos
+
+Una mejora razonable de observabilidad seria anadir alarmas basicas sobre:
+
+- errores en Lambdas
+- invocaciones fallidas
+- picos de latencia o fallos repetidos
+
+Esto permitiria complementar los logs ya disponibles en CloudWatch con una capa minima de monitorizacion activa.
+
+En el laboratorio actual, esta mejora no se ha implementado por las restricciones de permisos y roles del entorno, que ya han condicionado parte del despliegue serverless y aconsejan no ampliar el alcance con recursos adicionales no esenciales para la demo.
+
+### 3. Endurecimiento de CORS y configuracion de buckets
+
+Actualmente la demo prioriza simplicidad y facilidad de despliegue.
+
+Como mejora posterior, se recomienda:
+
+- restringir `CORS` a los origenes realmente necesarios
+- revisar el acceso publico de buckets y politicas asociadas
+- afinar configuraciones para reducir exposicion innecesaria
+
+Esta mejora tendria sentido especialmente si el proyecto evoluciona hacia un entorno menos academico y mas cercano a produccion.
+
+### 4. Separacion documental clara entre demo y produccion
+
+Aunque esta separacion ya se ha ido trabajando durante la migracion, todavia puede reforzarse mas en la documentacion final del proyecto.
+
+La mejora consistiria en dejar explicitamente diferenciados:
+
+- los recursos realmente desplegados en laboratorio
+- las limitaciones asumidas para la demo
+- la arquitectura objetivo recomendada para un entorno final mas robusto
+
+Esto aportaria claridad tecnica y academica de cara a memoria, defensa y anexos.
